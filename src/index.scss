@@ -115,6 +115,7 @@ section {
   background-color: #e1c4ff;
 }
 
+
 label {
   font-size: 20px;
   margin-block: 10px;
@@ -130,6 +131,10 @@ select {
   font-size: 20px;
 }
 
-// select{
-//   border: 2px solid #674c45;
-// }
+.custom-category{
+  margin-block: 10px;
+  border:3px solid#4c6745 ;
+  background-color: #4c6745;
+  border-radius: 2%;
+  padding: 12px 10px;
+}

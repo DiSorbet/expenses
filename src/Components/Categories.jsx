@@ -1,19 +1,23 @@
 import React from "react";
-import { categories2 } from "../App";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
-const Categories = ({ itemsList, setItemsList,setAddItem, editItem }) => {
+const Categories = ({
+  itemsList,
+  setItemsList,
+  categories,
+  setCategories,
+  editItem,
+}) => {
   const [itemsInCategory, setItemsInCategory] = React.useState([]);
 
   React.useEffect(() => {
-    const filteredItems = categories2.map((category, index) => {
-      return itemsList.filter((item) =>item.category === category.name);
+    const filteredItems = categories.map((category, index) => {
+      return itemsList.filter((item) => item.category === category.name);
     });
-    setItemsInCategory(filteredItems.filter((items) =>items.length > 0));
-  }, [itemsList])
-
+    setItemsInCategory(filteredItems.filter((items) => items.length > 0));
+  }, [itemsList]);
 
   const deleteItem = (id) => {
-    setItemsList(itemsList.filter(item=>item.id !==id))
+    setItemsList(itemsList.filter((item) => item.id !== id));
   };
   return (
     <div className="categories">
@@ -25,10 +29,17 @@ const Categories = ({ itemsList, setItemsList,setAddItem, editItem }) => {
               return (
                 <div className="added--item">
                   <p key={index}>
-                    {index + 1} {item.title} Цена: {item.price}рублей{" "} {item.category}
+                    {index + 1}) {item.formattedDate} {item.title} Цена:{" "}
+                    {item.price}рублей{" "}
                   </p>
-                  <AiFillEdit onClick={()=>editItem(item.id)} className="icon" />
-                  <AiFillDelete onClick={()=>deleteItem(item.id)} className="icon" />
+                  <AiFillEdit
+                    onClick={() => editItem(item.id)}
+                    className="icon"
+                  />
+                  <AiFillDelete
+                    onClick={() => deleteItem(item.id)}
+                    className="icon"
+                  />
                 </div>
               );
             })}

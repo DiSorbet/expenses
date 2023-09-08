@@ -19,35 +19,90 @@ function App() {
   const [addItem, setAddItem] = React.useState(false);
   const [itemsList, setItemsList] = React.useState([]);
   const [editedID, setEditedID] = React.useState("");
+  // const [customCategory,setCustomCategory]=React.useState('')
+  const [categories, setCategories] = React.useState(categories2);
   const [itemDetail, setItemDetail] = React.useState({
     title: "",
     category: categories2[0].name,
+    customCategory: "",
     color: categories2[0].color,
+    date: "",
+    formattedDate: "",
     price: "",
     id: "",
   });
 
-    
   const addItemFunction = (e) => {
     e.preventDefault();
-    if (itemDetail.category && itemDetail.title && itemDetail.price>0) {
-      const newItem ={...itemDetail, id:nanoid()}
-      setItemsList([...itemsList, newItem]);
-      setItemDetail({ title: "", price:"",id:"", category:categories2[0].name, color:  categories2[0].color});
+    if (
+      editedID &&
+      itemDetail.category &&
+      itemDetail.title &&
+      itemDetail.price > 0 &&
+      itemDetail.date
+    ) {
+      setItemsList(
+        itemsList.map((item) => {
+          return item.id === editedID
+            ? {
+                ...item,
+                category: itemDetail.category,
+                title: itemDetail.title,
+                price: itemDetail.price,
+                color: itemDetail.color,
+                date: itemDetail.date,
+                formattedDate: itemDetail.formattedDate,
+              }
+            : item;
+        })
+      );
+      setEditedID(null);
+      setItemDetail({
+        ...itemDetail,
+        // color: "",
+        title: "",
+        // category: "",
+        price: "",
+        id: "",
+        category: categories2[0].name,
+        color: categories2[0].color,
+        date: "",
+        formattedDate: "",
+      });
       setAddItem(false);
-    } 
+    } else if (
+      itemDetail.category &&
+      itemDetail.title &&
+      itemDetail.price > 0 &&
+      itemDetail.date
+    ) {
+      const newItem = { ...itemDetail, id: nanoid() };
+      setItemsList([...itemsList, newItem]);
+      setItemDetail({
+        ...itemDetail,
+        title: "",
+        price: "",
+        id: "",
+        category: categories2[0].name,
+        color: categories2[0].color,
+        date: "",
+        formattedDate: "",
+      });
+      setAddItem(false);
+    }
   };
 
   const editItemFunction = (id) => {
-    // const specificItem = itemsList.find((item) => item.id === id);
-    // setAddItem(true);
-    // setEditedID(id);
-    // setItemDetail({
-    //   ...itemDetail,
-    //   title: specificItem.title,
-    //   category: specificItem.category,
-    //   price: specificItem.price,
-    // });
+    const specificItem = itemsList.find((item) => item.id === id);
+    setAddItem(true);
+    setEditedID(id);
+    setItemDetail({
+      ...itemDetail,
+      title: specificItem.title,
+      category: specificItem.category,
+      price: specificItem.price,
+      color: specificItem.color,
+    });
   };
   return (
     <>
@@ -62,10 +117,14 @@ function App() {
             itemDetail={itemDetail}
             setItemDetail={setItemDetail}
             addFunction={addItemFunction}
+            categories={categories}
+            setCategories={setCategories}
           />
         )}
       </section>
       <Categories
+        categories={categories}
+        setCategories={setCategories}
         editItem={editItemFunction}
         setAddItem={setAddItem}
         setItemsList={setItemsList}
