@@ -1,4 +1,6 @@
 import React from "react";
+import {AiOutlineClose } from "react-icons/ai";
+
 
 const Form = ({
   itemDetail,
@@ -15,6 +17,7 @@ const Form = ({
     "transport",
     "credit",
   ];
+  const [isCustomCategory, setIsCustomCategory]=React.useState(false)
   const handleDate = (e) => {
     const date = new Date(e.target.value);
     const day = date.getDate();
@@ -30,8 +33,8 @@ const Form = ({
 
   const handleCategory = (e) => {
     let selectedCategory = e.target.value;
-    console.log(selectedCategory);
     if (selectedCategory == "custom") {
+      setIsCustomCategory(true)
       setItemDetail({ ...itemDetail, customCategory: selectedCategory });
     } else {
       const categoryArray = categories.filter(
@@ -48,13 +51,14 @@ const Form = ({
 
   const handleCustomCategory = (e) => {
     e.preventDefault();
-    if (itemDetail.customCategory) {
+    if (itemDetail.customCategory && itemDetail.customCategory !=='custom') {
       const newCategory = {
         name: itemDetail.customCategory,
         color: randomColor[Math.floor(Math.random() * randomColor.length)],
       };
       setCategories((prev) => [...prev, newCategory]);
       setItemDetail({ ...itemDetail, customCategory: "" });
+      setIsCustomCategory(false)
     }
   };
   return (
@@ -93,9 +97,11 @@ const Form = ({
         })}
         <option value="custom">Создать свою категорию</option>
       </select>
-      {itemDetail.customCategory && (
+      {isCustomCategory && (
         <div className="custom-category">
-          <input
+           <AiOutlineClose className="close--icon" onClick={()=>setIsCustomCategory(false)}/>
+          <label htmlFor="new--category"> Новая категория: </label>
+          <input className="new--category"
             onChange={(e) =>
               setItemDetail({ ...itemDetail, customCategory: e.target.value })
             }

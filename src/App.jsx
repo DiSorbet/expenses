@@ -19,7 +19,6 @@ function App() {
   const [addItem, setAddItem] = React.useState(false);
   const [itemsList, setItemsList] = React.useState([]);
   const [editedID, setEditedID] = React.useState("");
-  // const [customCategory,setCustomCategory]=React.useState('')
   const [categories, setCategories] = React.useState(categories2);
   const [itemDetail, setItemDetail] = React.useState({
     title: "",
@@ -59,9 +58,7 @@ function App() {
       setEditedID(null);
       setItemDetail({
         ...itemDetail,
-        // color: "",
         title: "",
-        // category: "",
         price: "",
         id: "",
         category: categories2[0].name,
@@ -102,6 +99,8 @@ function App() {
       category: specificItem.category,
       price: specificItem.price,
       color: specificItem.color,
+      date: specificItem.date,
+      formattedDate:specificItem.formattedDate
     });
   };
   return (

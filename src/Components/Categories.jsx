@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit,AiOutlineCloseCircle } from "react-icons/ai";
 const Categories = ({
   itemsList,
   setItemsList,
@@ -30,7 +30,7 @@ const Categories = ({
                 <div className="added--item">
                   <p key={index}>
                     {index + 1}) {item.formattedDate} {item.title} Цена:{" "}
-                    {item.price}рублей{" "}
+                    {item.price}руб.{" "}
                   </p>
                   <AiFillEdit
                     onClick={() => editItem(item.id)}
