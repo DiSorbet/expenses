@@ -1,6 +1,6 @@
 import React from "react";
-import {AiOutlineClose } from "react-icons/ai";
-
+import { AiOutlineClose } from "react-icons/ai";
+import styles from "./Form.module.scss";
 
 const Form = ({
   itemDetail,
@@ -8,6 +8,7 @@ const Form = ({
   addFunction,
   categories,
   setCategories,
+  setAddItem,
 }) => {
   const randomColor = [
     "food",
@@ -17,7 +18,7 @@ const Form = ({
     "transport",
     "credit",
   ];
-  const [isCustomCategory, setIsCustomCategory]=React.useState(false)
+  const [isCustomCategory, setIsCustomCategory] = React.useState(false);
   const handleDate = (e) => {
     const date = new Date(e.target.value);
     const day = date.getDate();
@@ -34,7 +35,7 @@ const Form = ({
   const handleCategory = (e) => {
     let selectedCategory = e.target.value;
     if (selectedCategory == "custom") {
-      setIsCustomCategory(true)
+      setIsCustomCategory(true);
       setItemDetail({ ...itemDetail, customCategory: selectedCategory });
     } else {
       const categoryArray = categories.filter(
@@ -51,18 +52,18 @@ const Form = ({
 
   const handleCustomCategory = (e) => {
     e.preventDefault();
-    if (itemDetail.customCategory && itemDetail.customCategory !=='custom') {
+    if (itemDetail.customCategory && itemDetail.customCategory !== "custom") {
       const newCategory = {
         name: itemDetail.customCategory,
         color: randomColor[Math.floor(Math.random() * randomColor.length)],
       };
       setCategories((prev) => [...prev, newCategory]);
       setItemDetail({ ...itemDetail, customCategory: "" });
-      setIsCustomCategory(false)
+      setIsCustomCategory(false);
     }
   };
   return (
-    <form>
+    <form className={styles.root}>
       <label> На что я потратил деньги сегодня:</label>
       <label htmlFor="date">Дата:</label>
       <input
@@ -98,10 +99,14 @@ const Form = ({
         <option value="custom">Создать свою категорию</option>
       </select>
       {isCustomCategory && (
-        <div className="custom-category">
-           <AiOutlineClose className="close--icon" onClick={()=>setIsCustomCategory(false)}/>
+        <div className={styles.customCategory}>
+          <AiOutlineClose
+            className={styles.closeIcon}
+            onClick={() => setIsCustomCategory(false)}
+          />
           <label htmlFor="new--category"> Новая категория: </label>
-          <input className="new--category"
+          <input
+            className="new--category"
             onChange={(e) =>
               setItemDetail({ ...itemDetail, customCategory: e.target.value })
             }
@@ -119,7 +124,10 @@ const Form = ({
         type="number"
         placeholder="Укажите цену"
       />
-      <button onClick={addFunction}>Добавить</button>
+      <div className={styles.buttonsContainer}>
+        <button onClick={addFunction}>Добавить</button>
+        <button onClick={() => setAddItem(false)}> Отменить</button>
+      </div>
     </form>
   );
 };

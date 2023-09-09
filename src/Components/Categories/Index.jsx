@@ -1,4 +1,6 @@
 import React from "react";
+import styles from './Categories.module.scss'
+
 import { AiFillDelete, AiFillEdit,AiOutlineCloseCircle } from "react-icons/ai";
 const Categories = ({
   itemsList,
@@ -20,25 +22,25 @@ const Categories = ({
     setItemsList(itemsList.filter((item) => item.id !== id));
   };
   return (
-    <div className="categories">
+    <div className={styles.root}>
       {itemsInCategory.map((items, index) => {
         return (
-          <div key={index} className={`category color--${items[0].color}`}>
+          <div key={index} className={`${styles.category} ${styles[`color--${items[0].color}`]}  `}>
             <h3>Категория: {items[0].category}</h3>
             {items.map((item, index) => {
               return (
-                <div className="added--item">
+                <div className={styles.addedItem}>
                   <p key={index}>
                     {index + 1}) {item.formattedDate} {item.title} Цена:{" "}
                     {item.price}руб.{" "}
                   </p>
                   <AiFillEdit
                     onClick={() => editItem(item.id)}
-                    className="icon"
+                    className={styles.icon}
                   />
                   <AiFillDelete
                     onClick={() => deleteItem(item.id)}
-                    className="icon"
+                    className={styles.icon}
                   />
                 </div>
               );

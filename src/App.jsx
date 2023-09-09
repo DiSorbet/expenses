@@ -1,6 +1,6 @@
 import React from "react";
-import Form from "./Components/Form";
-import Categories from "./Components/Categories";
+import Form from "./Components/Form/Index";
+import Categories from "./Components/Categories/Index";
 import { nanoid } from "nanoid";
 
 export const categories2 = [
@@ -118,6 +118,7 @@ function App() {
             addFunction={addItemFunction}
             categories={categories}
             setCategories={setCategories}
+            setAddItem={setAddItem}
           />
         )}
       </section>

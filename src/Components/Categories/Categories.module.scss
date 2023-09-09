@@ -1,0 +1,80 @@
+.root {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 40px;
+ 
+
+  .color--food {
+    background: #78929c;
+    height: 100%;
+  }
+
+  .color--clothes {
+    background-color: #d6c7c7;
+  }
+
+  .color--beauty {
+    background-color: #a79aad;
+  }
+
+  .color--leisure {
+    background-color: #ccb2b5;
+  }
+
+  .color--travel {
+    background-color: #e4d5b7;
+  }
+
+  .color--internet {
+    background-color: #eed9c4;
+  }
+
+  .color--credit {
+    background-color: #faf0e6;
+  }
+
+  .color--technique {
+    background-color: #e6d7ff;
+  }
+
+  .color--transport {
+    background-color: #e1c4ff;
+  }
+
+  .category {
+    display: block;
+    padding: 10px 15px;
+    margin: 15px auto;
+    width: 400px;
+
+    h3 {
+      background-color: transparent;
+    }
+
+    .addedItem {
+      display: flex;
+      column-gap: 4px;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      p,
+      h3 {
+        background-color: transparent;
+        margin-block: 5px;
+      }
+      p {
+        font-size: 18px;
+        font-weight: 500;
+      }
+      .icon {
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 22px;
+        :hover {
+          color: #44312d;
+        }
+      }
+    }
+  }
+}
