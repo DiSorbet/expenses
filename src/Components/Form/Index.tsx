@@ -1,6 +1,23 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import styles from "./Form.module.scss";
+import { itemDetailType } from "../../App";
+
+type FormProps = {
+  itemDetail: itemDetailType;
+  setItemDetail: React.Dispatch<React.SetStateAction<itemDetailType>>;
+  addFunction: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  categories: { name: string; color: string }[];
+  setCategories: React.Dispatch<
+    React.SetStateAction<
+      {
+        name: string;
+        color: string;
+      }[]
+    >
+  >;
+  setAddItem: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const Form = ({
   itemDetail,
@@ -9,7 +26,7 @@ const Form = ({
   categories,
   setCategories,
   setAddItem,
-}) => {
+}: FormProps) => {
   const randomColor = [
     "food",
     "leisure",
@@ -19,7 +36,7 @@ const Form = ({
     "credit",
   ];
   const [isCustomCategory, setIsCustomCategory] = React.useState(false);
-  const handleDate = (e) => {
+  const handleDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value);
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -32,7 +49,9 @@ const Form = ({
     });
   };
 
-  const handleCategory = (e) => {
+  const handleCategory = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     let selectedCategory = e.target.value;
     if (selectedCategory == "custom") {
       setIsCustomCategory(true);
@@ -50,7 +69,7 @@ const Form = ({
     }
   };
 
-  const handleCustomCategory = (e) => {
+  const handleCustomCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (itemDetail.customCategory && itemDetail.customCategory !== "custom") {
       const newCategory = {
@@ -58,7 +77,7 @@ const Form = ({
         color: randomColor[Math.floor(Math.random() * randomColor.length)],
       };
       setCategories((prev) => [...prev, newCategory]);
-      setItemDetail({ ...itemDetail, customCategory: "" });
+      setItemDetail({ ...itemDetail, customCategory: "", category: "" });
       setIsCustomCategory(false);
     }
   };
@@ -66,12 +85,7 @@ const Form = ({
     <form className={styles.root}>
       <label> На что я потратил деньги сегодня:</label>
       <label htmlFor="date">Дата:</label>
-      <input
-        htmlFor="date"
-        value={itemDetail.date}
-        type="date"
-        onChange={handleDate}
-      />
+      <input value={itemDetail.date} type="date" onChange={handleDate} />
       <label htmlFor="name">Название покупки:</label>
       <input
         value={itemDetail.title}
@@ -79,7 +93,7 @@ const Form = ({
           setItemDetail({ ...itemDetail, title: e.target.value })
         }
         id="name"
-        htmlFor="name"
+        type="name"
         placeholder="Название покупки"
       />
       <label htmlFor="category">Категория:</label>
@@ -87,11 +101,12 @@ const Form = ({
         name="Выбери Категорию"
         value={itemDetail.category}
         onChange={handleCategory}
-        htmlFor="category"
+        id="category"
       >
+        <option value=""></option>
         {categories.map((item, index) => {
           return (
-            <option key={index} value={item.name} htmlFor="category">
+            <option key={index} value={item.name} data-category="category">
               {item.name}
             </option>
           );
@@ -117,9 +132,9 @@ const Form = ({
       )}
       <label htmlFor="price">Цена:</label>
       <input
-        value={itemDetail.price}
+        value={itemDetail.price === 0 ? "" : itemDetail.price}
         onChange={(e) =>
-          setItemDetail({ ...itemDetail, price: e.target.value })
+          setItemDetail({ ...itemDetail, price: Number(e.target.value) })
         }
         type="number"
         placeholder="Укажите цену"

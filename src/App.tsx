@@ -14,24 +14,47 @@ export const categories2 = [
   { name: "Техника", color: "technique" },
   { name: "Транспорт", color: "transport" },
 ];
+export type itemDetailType = {
+  title: string;
+  category: string;
+  customCategory: string;
+  color: string;
+  date: string;
+  formattedDate: string;
+  price: number;
+  id: string;
+};
+
+const defaultDetailState = {
+  title: "",
+  category: "",
+  customCategory: "",
+  color: "",
+  date: "",
+  formattedDate: "",
+  price: 0,
+  id: "",
+};
 
 function App() {
   const [addItem, setAddItem] = React.useState(false);
-  const [itemsList, setItemsList] = React.useState([]);
-  const [editedID, setEditedID] = React.useState("");
+  const [totalPrice, setTotalPrice] = React.useState(0);
+  const [itemsList, setItemsList] = React.useState<itemDetailType[]>([]);
+  const [editedID, setEditedID] = React.useState<string | null>(null);
   const [categories, setCategories] = React.useState(categories2);
-  const [itemDetail, setItemDetail] = React.useState({
-    title: "",
-    category: categories2[0].name,
-    customCategory: "",
-    color: categories2[0].color,
-    date: "",
-    formattedDate: "",
-    price: "",
-    id: "",
-  });
+  const [itemDetail, setItemDetail] = React.useState(defaultDetailState);
 
-  const addItemFunction = (e) => {
+  React.useEffect(() => {
+    if (itemsList.length > 0) {
+      setTotalPrice(
+        itemsList
+          .map((item: itemDetailType) => Number(item.price))
+          .reduce((a: number, b: number) => a + b)
+      );
+    }
+  }, [itemsList]);
+
+  const addItemFunction = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (
       editedID &&
@@ -47,7 +70,7 @@ function App() {
                 ...item,
                 category: itemDetail.category,
                 title: itemDetail.title,
-                price: itemDetail.price,
+                price: Number(itemDetail.price),
                 color: itemDetail.color,
                 date: itemDetail.date,
                 formattedDate: itemDetail.formattedDate,
@@ -56,16 +79,7 @@ function App() {
         })
       );
       setEditedID(null);
-      setItemDetail({
-        ...itemDetail,
-        title: "",
-        price: "",
-        id: "",
-        category: categories2[0].name,
-        color: categories2[0].color,
-        date: "",
-        formattedDate: "",
-      });
+      setItemDetail(defaultDetailState);
       setAddItem(false);
     } else if (
       itemDetail.category &&
@@ -75,33 +89,26 @@ function App() {
     ) {
       const newItem = { ...itemDetail, id: nanoid() };
       setItemsList([...itemsList, newItem]);
-      setItemDetail({
-        ...itemDetail,
-        title: "",
-        price: "",
-        id: "",
-        category: categories2[0].name,
-        color: categories2[0].color,
-        date: "",
-        formattedDate: "",
-      });
+      setItemDetail(defaultDetailState);
       setAddItem(false);
     }
   };
 
-  const editItemFunction = (id) => {
+  const editItemFunction = (id: string) => {
     const specificItem = itemsList.find((item) => item.id === id);
     setAddItem(true);
     setEditedID(id);
-    setItemDetail({
-      ...itemDetail,
-      title: specificItem.title,
-      category: specificItem.category,
-      price: specificItem.price,
-      color: specificItem.color,
-      date: specificItem.date,
-      formattedDate:specificItem.formattedDate
-    });
+    if (specificItem) {
+      setItemDetail({
+        ...itemDetail,
+        title: specificItem.title,
+        category: specificItem.category,
+        price: specificItem.price,
+        color: specificItem.color,
+        date: specificItem.date,
+        formattedDate: specificItem.formattedDate,
+      });
+    }
   };
   return (
     <>
@@ -110,7 +117,6 @@ function App() {
         {!addItem && (
           <button onClick={() => setAddItem(true)}>Добавить расходы</button>
         )}
-
         {addItem && (
           <Form
             itemDetail={itemDetail}
@@ -124,12 +130,16 @@ function App() {
       </section>
       <Categories
         categories={categories}
-        setCategories={setCategories}
         editItem={editItemFunction}
-        setAddItem={setAddItem}
         setItemsList={setItemsList}
         itemsList={itemsList}
       />
+      {itemsList.length > 1 && totalPrice > 0 && (
+        <h3>
+          Итоговая сумма:{" "}
+          {totalPrice.toLocaleString("ru-RU", { useGrouping: true })} рублей
+        </h3>
+      )}
     </>
   );
 }
