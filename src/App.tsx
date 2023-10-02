@@ -2,6 +2,8 @@ import React from "react";
 import Form from "./Components/Form/Index";
 import Categories from "./Components/Categories/Index";
 import { nanoid } from "nanoid";
+import { CountPrice } from "./utils/CountPrice";
+import { itemDetailType } from "./App.types";
 
 export const categories2 = [
   { name: "Продукты", color: "food" },
@@ -14,16 +16,7 @@ export const categories2 = [
   { name: "Техника", color: "technique" },
   { name: "Транспорт", color: "transport" },
 ];
-export type itemDetailType = {
-  title: string;
-  category: string;
-  customCategory: string;
-  color: string;
-  date: string;
-  formattedDate: string;
-  price: number;
-  id: string;
-};
+
 
 const defaultDetailState = {
   title: "",
@@ -47,9 +40,7 @@ function App() {
   React.useEffect(() => {
     if (itemsList.length > 0) {
       setTotalPrice(
-        itemsList
-          .map((item: itemDetailType) => Number(item.price))
-          .reduce((a: number, b: number) => a + b)
+        CountPrice(itemsList)
       );
     }
   }, [itemsList]);

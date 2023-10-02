@@ -1,23 +1,8 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import styles from "./Form.module.scss";
-import { itemDetailType } from "../../App";
-
-type FormProps = {
-  itemDetail: itemDetailType;
-  setItemDetail: React.Dispatch<React.SetStateAction<itemDetailType>>;
-  addFunction: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  categories: { name: string; color: string }[];
-  setCategories: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-        color: string;
-      }[]
-    >
-  >;
-  setAddItem: React.Dispatch<React.SetStateAction<boolean>>;
-};
+import { itemDetailType } from "../../App.types";
+import { FormPropsType } from "./Form.types";
 
 const Form = ({
   itemDetail,
@@ -26,7 +11,7 @@ const Form = ({
   categories,
   setCategories,
   setAddItem,
-}: FormProps) => {
+}: FormPropsType) => {
   const randomColor = [
     "food",
     "leisure",

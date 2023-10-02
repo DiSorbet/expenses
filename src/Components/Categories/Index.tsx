@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Categories.module.scss";
 import { AiFillDelete, AiFillEdit, AiOutlineCloseCircle } from "react-icons/ai";
-import { itemDetailType } from "../../App";
+import { itemDetailType } from "../../App.types";
+import { CountPrice } from "../../utils/CountPrice";
 
 type categoriesProps = {
   itemsList: itemDetailType[];
@@ -65,11 +66,8 @@ const Categories = ({
             })}
             <h3>
               Итого:{" "}
-              {items
-                .map((item: itemDetailType) => Number(item.price))
-                .reduce((a: number, b: number) => a + b)
-                .toLocaleString("ru-RU", { useGrouping: true })}
-              рублей{" "}
+              {CountPrice(items).toLocaleString("ru-RU", { useGrouping: true })}{" "}
+              рублей
             </h3>
           </div>
         );
